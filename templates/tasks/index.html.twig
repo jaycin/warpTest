@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+{% block title %} Todo List {% endblock %}
+
+{% block body %}
+{% if tasks %}
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Due Date</th>
+            <th>Priority</th>
+            <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for task in tasks %}
+            <tr {%  if task.Priority %} class="table-danger" {% endif %}>
+                <td>{{ task.Title }}</td>
+                <td>{{ task.Body }}</td>
+                <td>{{ task.DueDate|date('Y-m-d') }}</td>
+                <td>{% if task.Priority %} High {% else %} Low {% endif %}</td>
+                <td>
+                    {% if task.IsComplete %}
+                        Completed
+                    {% else %}
+                        <a href="#" onclick="completeItem({{ task.id }})" class="btn btn-primary">Complete</a>
+                    {% endif %}
+                    <a href="/Task/edit/{{ task.Id }}" class="btn btn-dark">Edit</a>
+                    <a href="#" onclick="deleteitem({{ task.id }})" class="btn btn-danger" data-id="{{ task.id }}">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p> No Tasks have been created </p>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="js/Task.js"></script>
+
+{% endblock %}
